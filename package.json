@@ -1,16 +1,11 @@
 {
+  "license": "ISC",  
   "scripts": {
     "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
-    "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check",
-    "swap-to-sol": "ts-node cli/swap-to-sol.ts"
+    "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check"
   },
   "dependencies": {
-    "@coral-xyz/anchor": "^0.27.0",
-    "@solana/spl-token": "^0.3.7",
-    "fs": "^0.0.1-security",
-    "mermaid": "^11.0.2",
-    "node-fetch": "^2.6.7",
-    "path": "^0.12.7"
+    "@coral-xyz/anchor": "^0.30.1"
   },
   "devDependencies": {
     "chai": "^4.3.4",
@@ -20,7 +15,6 @@
     "@types/chai": "^4.3.0",
     "@types/mocha": "^9.0.0",
     "typescript": "^4.3.5",
-    "prettier": "^2.6.2",
-    "@solana/spl-token": "^0.3.7"
+    "prettier": "^2.6.2"
   }
 }

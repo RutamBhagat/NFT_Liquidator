@@ -1,3 +1,8 @@
+pub mod constants;
+pub mod error;
+pub mod instructions;
+pub mod state;
+
 use anchor_lang::{
     prelude::*,
     solana_program::{entrypoint::ProgramResult, instruction::Instruction, program::invoke_signed},
@@ -5,39 +10,20 @@ use anchor_lang::{
 };
 use anchor_spl::token::{self, Mint, Token, TokenAccount};
 
-declare_id!("JUPDWNB9G9Hsg8PKynnP6DyWLsXVn4QnqMCqg6n4ZdM");
+pub use constants::*;
+pub use error::ErrorCode;
+pub use instructions::*;
+pub use state::*;
 
-pub const AUTHORITY_SEED: &[u8] = b"authority";
-pub const WSOL_SEED: &[u8] = b"wsol";
-
-mod jupiter {
-    use anchor_lang::declare_id;
-    declare_id!("JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4");
-}
-
-#[derive(Clone)]
-pub struct Jupiter;
-
-impl anchor_lang::Id for Jupiter {
-    fn id() -> Pubkey {
-        jupiter::id()
-    }
-}
-
-#[error_code]
-pub enum ErrorCode {
-    InvalidReturnData,
-    InvalidJupiterProgram,
-    IncorrectOwner,
-}
+declare_id!("S5yb3Bysioeuq7pvuixejRTVfu1kEFUm5gzmkLJL5Dc");
 
 #[program]
 pub mod nft_liquidator {
     use super::*;
 
     pub fn swap_to_sol(ctx: Context<SwapToSOL>, data: Vec<u8>) -> Result<()> {
-        let authority_bump = ctx.bumps.get("program_authority").unwrap().to_le_bytes();
-        let wsol_bump = ctx.bumps.get("program_wsol_account").unwrap().to_le_bytes();
+        let authority_bump = [ctx.bumps.program_authority];
+        let wsol_bump = [ctx.bumps.program_wsol_account];
 
         create_wsol_token_idempotent(
             ctx.accounts.program_authority.clone(),
