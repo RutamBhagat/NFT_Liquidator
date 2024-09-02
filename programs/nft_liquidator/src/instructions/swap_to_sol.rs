@@ -1,7 +1,13 @@
 use crate::constants::*;
 use crate::state::Jupiter;
-use crate::utils::{jupiter_funcs, wsol};
-use anchor_lang::{prelude::*, system_program};
+use crate::utils::{
+    jupiter_funcs::swap_on_jupiter,
+    wsol::{close_program_wsol, create_wsol_token_idempotent},
+};
+use anchor_lang::{
+    prelude::*,
+    system_program::{transfer, Transfer},
+};
 use anchor_spl::token::{Mint, Token, TokenAccount};
 
 #[derive(Accounts)]
@@ -24,7 +30,7 @@ impl<'info> SwapToSOL<'info> {
         let authority_bump = [bumps.program_authority];
         let wsol_bump = [bumps.program_wsol_account];
 
-        wsol::create_wsol_token_idempotent(
+        create_wsol_token_idempotent(
             self.program_authority.clone(),
             self.program_wsol_account.clone(),
             self.sol_mint.clone(),
@@ -36,11 +42,11 @@ impl<'info> SwapToSOL<'info> {
 
         msg!("Swap on Jupiter");
         let remaining_accounts: Vec<AccountInfo<'info>> = self.to_account_infos();
-        jupiter_funcs::swap_on_jupiter(&remaining_accounts, self.jupiter_program.clone(), data)?;
+        swap_on_jupiter(&remaining_accounts, self.jupiter_program.clone(), data)?;
 
         let after_swap_lamports = self.program_wsol_account.lamports();
 
-        wsol::close_program_wsol(
+        close_program_wsol(
             self.program_authority.clone(),
             self.program_wsol_account.clone(),
             self.token_program.clone(),
@@ -55,10 +61,10 @@ impl<'info> SwapToSOL<'info> {
         msg!("Transfer SOL to user");
         let signer_seeds: &[&[&[u8]]] = &[&[AUTHORITY_SEED, authority_bump.as_ref()]];
         let lamports = out_amount;
-        system_program::transfer(
+        transfer(
             CpiContext::new_with_signer(
                 self.system_program.to_account_info(),
-                system_program::Transfer {
+                Transfer {
                     from: self.program_authority.to_account_info(),
                     to: self.user_account.to_account_info(),
                 },
