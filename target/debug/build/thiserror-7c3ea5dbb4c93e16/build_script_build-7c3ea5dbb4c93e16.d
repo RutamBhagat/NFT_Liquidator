@@ -1,0 +1,5 @@
+/home/rutam/Downloads/Code/rust/turbin_wba/Capstone_NFT_Liquidator/target/debug/build/thiserror-7c3ea5dbb4c93e16/build_script_build-7c3ea5dbb4c93e16: /home/rutam/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.63/build.rs
+
+/home/rutam/Downloads/Code/rust/turbin_wba/Capstone_NFT_Liquidator/target/debug/build/thiserror-7c3ea5dbb4c93e16/build_script_build-7c3ea5dbb4c93e16.d: /home/rutam/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.63/build.rs
+
+/home/rutam/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.63/build.rs:
